@@ -20,7 +20,7 @@ try {
 
         if (!accept || !accept.includes('application/json')) {
             if (method !== "OPTIONS") {
-                res.status(406).json({
+                return res.status(406).json({
                     message: 'Only application/json is accepted'
                 });
             }
