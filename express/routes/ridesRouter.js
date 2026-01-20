@@ -5,13 +5,56 @@ import {faker} from "@faker-js/faker/locale/nl";
 const router = Router();
 
 router.get('/', async (req, res) => {
-    const rides = await Ride.find({}, '-description');
+    const page = Math.max(parseInt(req.query.page) || 1, 1);
+    const limit = req.query.limit ? Math.max(parseInt(req.query.limit), 1) : null;
+    const totalItems = await Ride.countDocuments();
+
+    let query = Ride.find({}, '-description');
+
+    let totalPages = 1;
+    let currentItems = totalItems;
+
+    if (limit) {
+        totalPages = Math.max(Math.ceil(totalItems / limit), 1);
+
+        const currentPage = Math.min(page, totalPages);
+        const skip = (currentPage - 1) * limit;
+
+        query = query.skip(skip).limit(limit);
+    }
+
+    const rides = await query.exec();
+    currentItems = rides.length;
+
+    const buildURI = (p) => `${process.env.BASE_URI}/rides${limit ? `?page=${p}` : ''}${limit ? `&limit=${limit}` : ''}`;
 
     const collection = {
         items: rides,
+        pagination: {
+            currentPage: page,
+            currentItems: currentItems,
+            totalPages: totalPages,
+            totalItems: totalItems,
+            _links: {
+                first: {
+                    page: 1,
+                    href: buildURI(1)
+                },
+                last: {
+                    page: totalPages,
+                    href: buildURI(totalPages)
+                },
+                previous: page > 1 && page <= totalPages
+                    ? {page: page - 1, href: buildURI(page - 1)}
+                    : null,
+                next: page < totalPages
+                    ? {page: page + 1, href: buildURI(page + 1)}
+                    : null
+            }
+        },
         _links: {
             self: {
-                href: `${process.env.BASE_URI}/rides`
+                href: `${process.env.BASE_URI}/rides${limit ? `?page=${page}` : ''}${limit ? `&limit=${limit}` : ''}`
             },
             collection: {
                 href: `${process.env.BASE_URI}/rides`
