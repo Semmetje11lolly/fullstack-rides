@@ -150,16 +150,24 @@ router.get('/:id', async (req, res) => {
     try {
         const ride = await Ride.findById(rideId);
 
-        if (ride) {
-            res.json(ride);
-        } else {
-            res.status(404).json({
+        if (!ride) {
+            return res.status(404).json({
                 message: 'Ride not found'
             });
         }
+
+        const lastModified = ride.updatedAt.toUTCString();
+        const ifModifiedSince = req.headers['if-modified-since'];
+
+        if (ifModifiedSince && new Date(ifModifiedSince) >= new Date(lastModified)) {
+            return res.status(304).end();
+        }
+
+        res.header('Last-Modified', lastModified)
+        res.json(ride);
     } catch (e) {
-        res.status(404).json({
-            message: 'Ride not found'
+        res.status(500).json({
+            message: 'Server error'
         });
     }
 });
