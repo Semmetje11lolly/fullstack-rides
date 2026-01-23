@@ -1,7 +1,9 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router";
+import {AppContext} from "../Contexts.js.jsx";
 
 function RideDetail() {
+    const {setRides} = useContext(AppContext);
     const params = useParams();
     const navigate = useNavigate();
 
@@ -34,6 +36,10 @@ function RideDetail() {
                 }
             });
 
+            setRides(prev =>
+                prev.filter(r => r.id !== ride.id)
+            );
+
             navigate('/rides');
         } catch (e) {
             console.log(e.message);
@@ -42,7 +48,7 @@ function RideDetail() {
 
     useEffect(() => {
         getRide();
-    }, []);
+    }, [params.id]);
 
     return (
         <>
@@ -55,7 +61,7 @@ function RideDetail() {
                 <div className={"flex justify-end gap-3 pt-5"}>
                     <Link to={`/rides/${ride.id}/edit`}
                           className={"text-white bg-(--color-primary) rounded px-3 py-1.5"}>Edit</Link>
-                    <button onClick={deleteRide} className={"text-white bg-red-600 rounded px-3 py-1.5"}>
+                    <button onClick={deleteRide} className={"text-white bg-red-600 rounded cursor-pointer px-3 py-1.5"}>
                         Delete
                     </button>
                 </div>

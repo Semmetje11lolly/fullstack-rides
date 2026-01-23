@@ -6,6 +6,7 @@ import Error from "./pages/Error.jsx";
 import Home from "./pages/Home.jsx";
 import Rides from "./pages/Rides.jsx";
 import RideDetail from "./pages/RideDetail.jsx";
+import RideEdit from "./pages/RideEdit.jsx";
 
 const router = createBrowserRouter([
     {
@@ -24,16 +25,17 @@ const router = createBrowserRouter([
                 path: "/rides/:id",
                 element: <RideDetail/>
             },
-            // {
-            //     path: "/rides/:id/edit",
-            //     element: <RideEdit/>
-            // }
+            {
+                path: "/rides/:id/edit",
+                element: <RideEdit/>
+            }
         ],
     },
 ]);
 
 function App() {
     const [rides, setRides] = useState([]);
+    const [areas, setAreas] = useState([]);
 
     const [pagination, setPagination] = useState({totalPages: 1});
     const [page, setPage] = useState(1);
@@ -56,12 +58,29 @@ function App() {
         }
     }
 
+    const getAreas = async () => {
+        try {
+            const response = await fetch(`http://145.24.237.153:8000/areas`, {
+                headers: {Accept: "application/json"}
+            });
+            const data = await response.json();
+            console.log(data.items);
+            setAreas(data.items);
+        } catch (e) {
+            console.log(e.message);
+        }
+    };
+
     useEffect(() => {
         getRides();
     }, [page]);
 
+    useEffect(() => {
+        getAreas();
+    }, []);
+
     return (
-        <AppContext value={{rides, setRides, page, setPage, pagination, setPagination}}>
+        <AppContext value={{rides, setRides, areas, setAreas, page, setPage, pagination, setPagination}}>
             <RouterProvider router={router}/>
         </AppContext>
     );
