@@ -1,10 +1,9 @@
-import {useContext, useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router";
+import {useContext, useState} from "react";
+import {useNavigate} from "react-router";
 import {AppContext} from "../Contexts.js.jsx";
 
-function RideEdit() {
+function RideCreate() {
     const {getRides, areas} = useContext(AppContext);
-    const {id} = useParams();
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -13,27 +12,6 @@ function RideEdit() {
         description: "",
         area: ""
     });
-
-    const getRide = async () => {
-        try {
-            const response = await fetch(`http://145.24.237.153:8000/rides/${id}`, {
-                headers: {
-                    Accept: "application/json"
-                }
-            });
-
-            const data = await response.json();
-
-            setForm({
-                name: data.name ?? "",
-                category: data.category ?? "",
-                description: data.description ?? "",
-                area: data.area?.id ?? ""
-            });
-        } catch (e) {
-            console.log(e.message);
-        }
-    };
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
@@ -48,8 +26,8 @@ function RideEdit() {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://145.24.237.153:8000/rides/${id}`, {
-                method: "PUT",
+            const response = await fetch(`http://145.24.237.153:8000/rides`, {
+                method: "POST",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
@@ -57,22 +35,19 @@ function RideEdit() {
                 body: JSON.stringify(form)
             });
 
+            const newRide = await response.json();
             await getRides();
 
-            navigate(`/rides/${id}`);
+            navigate(`/rides/${newRide.id}`);
         } catch (e) {
             console.log(e.message);
         }
     };
 
-    useEffect(() => {
-        getRide();
-    }, [id]);
-
     return (
         <section className={"flex flex-col text-center py-10"}>
-            <h1 className={"text-5xl font-bold"}>Edit {form.name}</h1>
-            <p className={"text-xl capitalize"}>Made a mistake? Correct it here!</p>
+            <h1 className={"text-5xl font-bold"}>New Attraction</h1>
+            <p className={"text-xl capitalize"}>Create a new attraction here!</p>
 
             <form onSubmit={handleSubmit} className={"flex flex-col gap-4 mt-8"}>
                 <input
@@ -121,11 +96,11 @@ function RideEdit() {
                     type="submit"
                     className={"bg-(--color-primary) text-white rounded cursor-pointer px-4 py-2 mt-3"}
                 >
-                    Save
+                    Create
                 </button>
             </form>
         </section>
     );
 }
 
-export default RideEdit;
+export default RideCreate;

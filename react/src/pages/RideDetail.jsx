@@ -54,7 +54,7 @@ function RideDetail() {
         <>
             <section className={"flex flex-col text-center py-10"}>
                 <h1 className={"text-5xl font-bold"}>{ride.name}</h1>
-                <p className={"text-xl capitalize"}>{ride.category} in {ride.area?.name}</p>
+                <p className={"text-xl capitalize"}>{ride.category} in {ride.area?.name || "Unknown"}</p>
             </section>
             <section className={"flex flex-col text-center pb-10"}>
                 <p>{ride.description}</p>

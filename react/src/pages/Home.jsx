@@ -3,7 +3,7 @@ import {Link} from "react-router";
 function Home() {
     return (
         <>
-            <section className={"flex flex-col items-center text-center p-10"}>
+            <section className={"flex flex-col justify-center items-center text-center h-125 p-10"}>
                 <h1 className={"text-5xl font-bold"}>All theme park attractions, one place!</h1>
                 <p className={"text-3xl"}>Find information on attractions from all around the world!</p>
                 <div className={"flex gap-5 mt-5"}>

@@ -7,6 +7,7 @@ import Home from "./pages/Home.jsx";
 import Rides from "./pages/Rides.jsx";
 import RideDetail from "./pages/RideDetail.jsx";
 import RideEdit from "./pages/RideEdit.jsx";
+import RideCreate from "./pages/RideCreate.jsx";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
             {
                 path: "/rides",
                 element: <Rides/>
+            },
+            {
+                path: "/rides/create",
+                element: <RideCreate/>
             },
             {
                 path: "/rides/:id",
@@ -80,7 +85,7 @@ function App() {
     }, []);
 
     return (
-        <AppContext value={{rides, setRides, areas, setAreas, page, setPage, pagination, setPagination}}>
+        <AppContext value={{rides, getRides, setRides, areas, setAreas, page, setPage, pagination, setPagination}}>
             <RouterProvider router={router}/>
         </AppContext>
     );
