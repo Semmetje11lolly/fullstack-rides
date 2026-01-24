@@ -52,9 +52,9 @@ router.get('/', async (req, res) => {
 
         if (limit) params.append('limit', limit.toString());
         if (limit) params.append('page', p);
-        if (req.query.category) params.append('category', req.query.category);
+        if (req.query.area) params.append('area', req.query.area);
 
-        return `${process.env.BASE_URI}/rides${limit || req.query.category ? '?' : ''}${params.toString()}`;
+        return `${process.env.BASE_URI}/rides${limit || req.query.area ? '?' : ''}${params.toString()}`;
     };
 
     const collection = {
@@ -134,6 +134,13 @@ router.post('/', async (req, res) => {
             area: req.body.area || null
 
         });
+
+        if (req.body.area) {
+            if (typeof req.body.area === 'object') {
+                ride.area = null;
+            }
+        }
+
         await ride.save();
 
         res.status(201).json(ride);
@@ -192,13 +199,18 @@ router.put('/:id', async (req, res) => {
     }
 
     try {
+        let rideArea;
+        if (req.body.area && typeof req.body.area !== 'object') {
+            rideArea = req.body.area;
+        }
+
         const ride = await Ride.findByIdAndUpdate(
             rideId,
             {
                 name: req.body.name,
                 category: req.body.category,
                 description: req.body.description,
-                area: req.body.area || null
+                area: rideArea
             },
             {
                 new: true,
