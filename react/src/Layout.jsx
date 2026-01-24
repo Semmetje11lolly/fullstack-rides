@@ -3,7 +3,7 @@ import {Link, Outlet} from "react-router";
 function Layout() {
     return (
         <>
-            <nav className={"flex bg-white"}>
+            <nav className={"flex bg-white border-b border-gray-200"}>
                 <Link to={"/"} className={"p-5 hover:text-white transition hover:bg-(--color-hover)"}>Home</Link>
                 <Link to={"/rides"} className={"p-5 hover:text-white transition hover:bg-(--color-hover)"}>Rides</Link>
                 <Link to={"/areas"} className={"p-5 hover:text-white transition hover:bg-(--color-hover)"}>Areas</Link>
