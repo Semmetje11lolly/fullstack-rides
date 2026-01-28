@@ -32,12 +32,20 @@ All theme park attractions, one place!
 
 
 ## :information_source: About this project
-W.I.P.
+AttractionsDatabase is a place where theme park fans can find information on all sorts of rides from attractions all around the world! If a ride does not exist in the database yet, it can easily be added!
+
+This project was created for the final assignment of the course Programming 6 at Rotterdam University of Applied Sciences. The goal of the course was to build a full-stack website with React for the frond-end and Express for the back-end.
 
 
 
 ## :sparkles: Functionality
-W.I.P.
+### Rides
+- Find information on rides from theme parks all around the world!
+- Create new rides that aren't in the database yet!
+- Edit information on rides that is incorrect or outdated!
+### Areas
+- Find all rides based in an area from a theme park!
+- Create or edit areas with new information!
 
 
 
@@ -45,10 +53,41 @@ W.I.P.
 Below are the instructions on how to get the project running on your local machine!
 
 ### Requirements
-To be determined
+- Node.js & NPM
+- MongoDB
 
 ### Installation
-W.I.P.
+1. Clone the repository
+```sh
+git clone https://github.com/semvde/AttractionsDatabase.git attractions-database
+cd attractions-database
+```
+2. Setup dependencies, environment, database and front-end assets
+```sh
+cd react
+npm install
+npm run build
+cd ..\express
+npm install
+```
+- Copy and paste the following contents into a .env file (inside the express folder):
+```
+BASE_URI=http://localhost:8000
+EXPRESS_PORT=8000
+
+MONGO_DB_URI="mongodb://127.0.0.1:27017/rides"
+```
+- (!) Make sure [MongoDB is running](https://www.mongodb.com/docs/manual/administration/install-community/?operating-system=windows&windows-installation-method=wizard) for the database to work!
+
+3. Setup local test server
+```sh
+cd react
+npm run dev
+cd ..\express
+npm run dev
+```
+- View the website by going to http://localhost:5173
+- View the back-end service by going to http://localhost:8000
 
 
 
@@ -57,10 +96,34 @@ Below you can find the documentation of AttractionsDatabase!
 
 ### Technologies
 AttractionsDatabase uses the following technologies:
-W.I.P.
+- [![React][React.com]][React-url]
+    - [![Tailwind CSS][TailwindCSS.com]][TailwindCSS-url]
+    - [![JavaScript][JavaScript.com]][JavaScript-url]
+- [![Express][Express.com]][Express-url]
+- [![MongoDB][MongoDB.com]][MongoDB-url]
 
 ### Entity Relationship Diagram
-W.I.P.
+AttractionsDatabase Database logic is as follows:
+```mermaid
+erDiagram
+    AREA {
+        ObjectId _id PK
+        string name
+        datetime createdAt
+        datetime updatedAt
+    }
+    RIDE {
+        ObjectId _id PK
+        string name
+        string category
+        string description
+        ObjectId area_id FK
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    AREA ||--o{ RIDE : contains
+```
 
 ### Usage
 W.I.P.
@@ -69,3 +132,16 @@ W.I.P.
 
 ## :scroll: License
 The source code in this repository is licensed under the MIT License.
+
+
+
+[React.com]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black
+[React-url]: https://reactjs.org
+[TailwindCSS.com]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
+[TailwindCSS-url]: https://tailwindcss.com
+[JavaScript.com]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
+[JavaScript-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+[Express.com]: https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white
+[Express-url]: https://expressjs.com
+[MongoDB.com]: https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white
+[MongoDB-url]: https://www.mongodb.com
