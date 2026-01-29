@@ -8,6 +8,8 @@ import Rides from "./pages/Rides.jsx";
 import RideDetail from "./pages/RideDetail.jsx";
 import RideEdit from "./pages/RideEdit.jsx";
 import RideCreate from "./pages/RideCreate.jsx";
+import Areas from "./pages/Areas.jsx";
+import AreaDetail from "./pages/AreaDetail.jsx";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +35,15 @@ const router = createBrowserRouter([
             {
                 path: "/rides/:id/edit",
                 element: <RideEdit/>
-            }
+            },
+            {
+                path: "/areas",
+                element: <Areas/>
+            },
+            {
+                path: "/areas/:id",
+                element: <AreaDetail/>
+            },
         ],
     },
 ]);
